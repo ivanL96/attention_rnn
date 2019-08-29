@@ -20,10 +20,8 @@ def load_data():
                 if dialogue != '':
                     dis.append(dialogue)
 
-    # lengths = [len(el) for el in dis if len(el.split('\n')) > 2]
-
     print('dis:   ', dis[:5])
-    print(len(dis))
+    print('Dialogues length: ', len(dis))
     return dis
 
 pattern = re.compile('([^\s\w]|_)+')
@@ -35,13 +33,6 @@ def clean_text(text):
     if len(text) > 1 and text[:2] == '- ':
         text = text[2:]
     return text
-
-def tagger(decoder_input_sentence):
-    bos = "\t"
-    eos = "\n"
-    final_target = [bos + text + eos for text in decoder_input_sentence] 
-    return final_target
-
 
 def split_to_qa(dis):
     input_data = []

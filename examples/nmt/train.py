@@ -53,7 +53,6 @@ def preprocess_data(en_tokenizer, fr_tokenizer, en_text, fr_text, en_timesteps, 
     logger.info('Vocabulary size (French): {}'.format(np.max(fr_seq)+1))
     logger.debug('En text shape: {}'.format(en_seq.shape))
     logger.debug('Fr text shape: {}'.format(fr_seq.shape))
-
     return en_seq, fr_seq
 
 
@@ -96,6 +95,7 @@ def infer_nmt(encoder_model, decoder_model, test_en_seq, en_vsize, fr_vsize):
     dec_state = enc_last_state
     attention_weights = []
     fr_text = ''
+
     for i in range(20):
 
         dec_out, attention, dec_state = decoder_model.predict([enc_outs, dec_state, test_fr_onehot_seq])
@@ -106,7 +106,7 @@ def infer_nmt(encoder_model, decoder_model, test_en_seq, en_vsize, fr_vsize):
         test_fr_seq = sents2sequences(fr_tokenizer, [fr_index2word[dec_ind]], fr_vsize)
         test_fr_onehot_seq = np.expand_dims(to_categorical(test_fr_seq, num_classes=fr_vsize), 1)
 
-        attention_weights.append((dec_ind, attention))
+        attention_weights.append((dec_ind, attention)) # for further visualization
         fr_text += fr_index2word[dec_ind] + ' '
 
     return fr_text, attention_weights
